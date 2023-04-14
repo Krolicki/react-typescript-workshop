@@ -18,6 +18,9 @@
 
 .value{
     flex-grow: 1;
+    display: flex;
+    gap: .5em;
+    flex-wrap: wrap;
 }
 .clear-button{
     background: none;
@@ -70,4 +73,24 @@
 }
 .option:hover{
     background-color: rgb(36, 255, 189);
+}
+.option-button{
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: .25em;
+    padding: .2em .5em;
+    gap: .25em;
+    cursor: pointer;
+    background: none;
+    outline: none;
+}
+.option-button:hover,
+.option-button:focus{
+    background-color: antiquewhite;
+    border-color: red;
+}
+.option-button:hover > .clear-button,
+.option-button:focus > .clear-button{
+    color: red;
 }

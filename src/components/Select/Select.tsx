@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import style from './select.module.css'
 
 export type SelectOption = {
@@ -6,17 +6,39 @@ export type SelectOption = {
     value: number
 }
 
-type SelectProps = {
+type SingleSelectProps = {
+    multiple?: false
     value?: SelectOption
     onChange: (value: SelectOption | undefined) => void
-    options: SelectOption[]
 }
 
-export function Select({ value, onChange, options }: SelectProps) {
+type MultipleSelectProps = {
+    multiple: true
+    value: SelectOption[]
+    onChange: (value: SelectOption[]) => void
+}
+
+type SelectProps = {
+    options: SelectOption[]
+} & (SingleSelectProps | MultipleSelectProps)
+
+export function Select({ multiple, value, onChange, options }: SelectProps) {
     const [isOpen, setIsOpen] = useState(false)
 
-    function setectOption(option: SelectOption){
-        if(option !== value) onChange(option)
+    const wrapperRef = useRef<HTMLDivElement>(null)
+
+    function setectOption(option: SelectOption) {
+        if (multiple) {
+            if (value.includes(option)) {
+                onChange(value.filter(o => o !== option))
+            }
+            else {
+                onChange([...value, option])
+            }
+        }
+        else {
+            if (option !== value) onChange(option)
+        }
     }
 
     return (
@@ -25,13 +47,29 @@ export function Select({ value, onChange, options }: SelectProps) {
             onClick={() => setIsOpen(prev => !prev)}
             onBlur={() => setIsOpen(false)}
             tabIndex={0}
+            ref={wrapperRef}
         >
-            <span className={style.value}>{value?.label}</span>
+            <span className={style.value}>{multiple ? value.map(val => {
+                return(
+                    <button
+                        key={val.value}
+                        onClick={e => {
+                            e.stopPropagation()
+                            setectOption(val)
+                        }}
+                        className={style["option-button"]}
+                    >
+                        {val.label}
+                        <span className={style["clear-button"]}>&times;</span>
+                    </button>
+                )
+            }) 
+            : value?.label}</span>
             <button
                 className={style["clear-button"]}
                 onClick={(e) => {
                     e.stopPropagation()
-                    onChange(undefined)
+                    multiple ? onChange([]) : onChange(undefined)
                 }}
             >
                 &times;
@@ -42,9 +80,12 @@ export function Select({ value, onChange, options }: SelectProps) {
                 {options.map(option => {
                     return (
                         <li
-                            className={`${style.option} ${option === value ? style.selected : ""}`}
+                            className={`
+                                    ${style.option} 
+                                    ${(multiple ? value.includes(option) : option === value) ? style.selected : ""}
+                                `}
                             key={option.value}
-                            onClick={(e)=>{
+                            onClick={(e) => {
                                 e.stopPropagation()
                                 setectOption(option)
                                 setIsOpen(false)
