@@ -71,7 +71,7 @@
 .option.selected{
     background-color: rgb(130, 255, 218);
 }
-.option:hover{
+.option.highlighted{
     background-color: rgb(36, 255, 189);
 }
 .option-button{

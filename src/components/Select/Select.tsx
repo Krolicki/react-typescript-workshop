@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import style from './select.module.css'
 
 export type SelectOption = {
@@ -24,6 +24,7 @@ type SelectProps = {
 
 export function Select({ multiple, value, onChange, options }: SelectProps) {
     const [isOpen, setIsOpen] = useState(false)
+    const [highlightedIndex, setHighlightedIndex] = useState(0)
 
     const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -40,6 +41,42 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
             if (option !== value) onChange(option)
         }
     }
+
+    useEffect(()=>{
+        setHighlightedIndex(0)
+    },[isOpen])
+
+    useEffect(()=>{
+        const handler = (e: KeyboardEvent) => {
+            if(e.target !== wrapperRef.current) return
+            switch(e.code){
+                case "Enter":
+                case "Space":
+                    setIsOpen(prev => !prev)
+                    if(isOpen) setectOption(options[highlightedIndex])
+                    break
+                case "ArrowUp":
+                case "ArrowDown":
+                    if(!isOpen){
+                        setIsOpen(true)
+                        break
+                    }
+                    const newValue = highlightedIndex + (e.code === "ArrowDown" ? 1 : -1)
+                    if(newValue >= 0 && newValue < options.length){
+                        setHighlightedIndex(newValue)
+                    }
+                    break
+                case "Escape":
+                    setIsOpen(false)
+                    break
+            }
+        }
+        wrapperRef.current?.addEventListener("keydown", handler)
+
+        return () => {
+            wrapperRef.current?.removeEventListener("keydown", handler)
+        }
+    },[isOpen, highlightedIndex, options])
 
     return (
         <div
@@ -77,11 +114,12 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
             <div className={style.line}></div>
             <div className={style.options}></div>
             <ul className={`${style["options-list"]} ${isOpen ? style.show : ""}`}>
-                {options.map(option => {
+                {options.map((option, index) => {
                     return (
                         <li
                             className={`
-                                    ${style.option} 
+                                    ${style.option}
+                                    ${index === highlightedIndex ? style.highlighted : ""} 
                                     ${(multiple ? value.includes(option) : option === value) ? style.selected : ""}
                                 `}
                             key={option.value}
@@ -90,6 +128,7 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
                                 setectOption(option)
                                 setIsOpen(false)
                             }}
+                            onMouseEnter={() => setHighlightedIndex(index)}
                         >
                             {option.label}
                         </li>
