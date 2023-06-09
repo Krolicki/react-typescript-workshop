@@ -113,7 +113,7 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
             </button>
             <div className={style.line}></div>
             <div className={style.options}></div>
-            <ul className={`${style["options-list"]} ${isOpen ? style.show : ""}`}>
+            <ul className={`${style["options-list"]} ${isOpen ? style.show : ""}`} data-testid="select-component">
                 {options.map((option, index) => {
                     return (
                         <li
