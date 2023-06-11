@@ -86,7 +86,7 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
             tabIndex={0}
             ref={wrapperRef}
         >
-            <span className={style.value}>{multiple ? value.map(val => {
+            <span className={style.value} role="output">{multiple ? value.map(val => {
                 return(
                     <button
                         key={val.value}
