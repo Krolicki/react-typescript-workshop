@@ -129,6 +129,7 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
                                 setIsOpen(false)
                             }}
                             onMouseEnter={() => setHighlightedIndex(index)}
+                            role="option-list-item"
                         >
                             {option.label}
                         </li>
