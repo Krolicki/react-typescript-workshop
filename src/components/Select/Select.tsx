@@ -85,6 +85,7 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
             onBlur={() => setIsOpen(false)}
             tabIndex={0}
             ref={wrapperRef}
+            data-testid={`${multiple ? 'multipleSelect' : "singleSelect"}`}
         >
             <span className={style.value} role="output">{multiple ? value.map(val => {
                 return(

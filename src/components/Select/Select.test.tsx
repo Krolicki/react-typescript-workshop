@@ -1,6 +1,6 @@
 import {describe, expect, test, vi, it} from 'vitest'
 import {cleanup, fireEvent, render, screen} from '@testing-library/react';
-import { Select } from './Select';
+import { Select, SelectOption } from './Select';
 
 const options = [
     { label: "one", value: 1 },
@@ -36,8 +36,8 @@ describe("Select tests", () => {
         expect(listItems[0].textContent).toEqual(options[0].label)
         expect(listItems[1].textContent).toEqual(options[1].label)
         cleanup()
-      });
-    it('handle change', () => {
+      })
+    it('value should change', () => {
       let value = "one"
       render(
         <Select
@@ -46,13 +46,33 @@ describe("Select tests", () => {
           onChange={(item)=>{value = item? item.label : "null"}}
           data-testid="select-component"
         />
-      );
+      )
     
-      const listItems = screen.getAllByRole("option-list-item");
-      const secondItem = listItems[1];
+      const listItems = screen.getAllByRole("option-list-item")
+      const secondItem = listItems[1]
 
-      fireEvent.click(secondItem);
+      fireEvent.click(secondItem)
      
       expect(value).toBe("two")
+      cleanup()
+      });
+    it('multiple values setup test', () => {
+      render(
+        <Select
+          multiple
+          options={options}
+          value={options}
+          onChange={(item)=>{}}
+          data-testid="select-component"
+        />
+      )
+    
+      const listItems = screen.getAllByRole("option-list-item")
+      const secondItem = listItems[1]
+
+      expect(listItems.length).toBe(2)
+      expect(secondItem.textContent).toBe("two")
+
+      cleanup()
       });
 })

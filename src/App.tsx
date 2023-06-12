@@ -21,11 +21,13 @@ function App() {
         options={options}
         value={multipleValues}
         onChange={o => setMultipleValues(o)}
+        data-testid="multipleSelect"
       />
       <Select
         options={options}
         value={value}
         onChange={o => setValue(o)}
+        data-testid="singleSelect"
       />
     </div>
   )
