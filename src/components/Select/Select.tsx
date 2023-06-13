@@ -109,6 +109,7 @@ export function Select({ multiple, value, onChange, options }: SelectProps) {
                     e.stopPropagation()
                     multiple ? onChange([]) : onChange(undefined)
                 }}
+                data-testid="clearButton"
             >
                 &times;
             </button>
