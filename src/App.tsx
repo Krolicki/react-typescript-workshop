@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { Select, SelectOption } from './components/Select/Select'
+import { FetchData } from './components/FetchData/FetchData'
 
 const options = [
   { label: "one", value: 1 },
@@ -29,6 +30,7 @@ function App() {
         onChange={o => setValue(o)}
         data-testid="singleSelect"
       />
+      <FetchData />
     </div>
   )
 }

@@ -1,6 +1,9 @@
 import {describe, expect, test, vi, it} from 'vitest'
 import {cleanup, fireEvent, render, screen} from '@testing-library/react';
 import App from './App';
+import { fetch } from 'cross-fetch'
+
+global.fetch = fetch
 
 const options = [
     { label: "one", value: 1 },
