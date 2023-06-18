@@ -4,7 +4,7 @@ import { useCounter } from './useCouner';
 
 
 describe("useCounter tests", () => {
-    it("shoud increment", () => {
+    it("should increment", () => {
         const { result } = renderHook(() => useCounter())
 
         act(()=>{
@@ -13,7 +13,7 @@ describe("useCounter tests", () => {
 
         expect(result.current.count).toBe(1)
     })
-    it("shoud decrement", () => {
+    it("should decrement", () => {
         const { result } = renderHook(() => useCounter())
 
         act(()=>{
@@ -22,7 +22,7 @@ describe("useCounter tests", () => {
 
         expect(result.current.count).toBe(-1)
     })
-    it("shoud increment and decrement", () => {
+    it("should increment and decrement", () => {
         const { result } = renderHook(() => useCounter())
 
         act(()=>{
